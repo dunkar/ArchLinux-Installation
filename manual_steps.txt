@@ -1,0 +1,55 @@
+# Setup BIOS/MBR partitions
+    parted -s /dev/sda \
+    mktable msdos \
+    mkpart p ext4 0% 100%
+
+    mkfs.ext4 /dev/sda1
+
+    mount /dev/sda1 /mnt
+
+# Setup EFI/GPT partitions
+    parted -s /dev/sda \
+    mktable gpt \
+    mkpart p fat32 1M 200M \
+    mkpart p ext4 200M 100%
+
+    mkfs.vfat /dev/sda1
+    mkfs.ext4 /dev/sda2
+
+    mount /dev/sda2 /mnt
+    mkdir /mnt/boot
+    mount /dev/sda1 /mnt/boot
+
+# Create swapfile
+    dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
+    chmod 0600 /mnt/swapfile
+    mkswap /mnt/swapfile
+    swapon /mnt/swapfile
+    sysctl -w vm.swappiness=1
+
+# Install base packages
+    pacstrap /mnt base grub
+    genfstab -Up /mnt >> /mnt/etc/fstab
+    sed -i 's|/mnt/swapfile|/swapfile|' /mnt/etc/fstab
+    echo 'vm.swappiness = 1' >> /mnt/etc/sysctl.d/99-sysctl.conf
+
+# Chroot to the new environment and complete configuration
+    arch-chroot /mnt
+    systemctl enable dhcpcd
+
+    # BIOS/MBR system:
+      grub-install /dev/sda
+    # EFI/GPT system:
+      grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=boot
+      mv /boot/EFI/boot/grubx64.efi /boot/EFI/boot/bootx64.efi
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+
+# Setup GUI environment
+    pacman -S --noconfirm xorg-server xfce4 gvfs alsa-utils
+    echo "exec startxfce4" >> /etc/skel/.xinitrc && \
+    cp /etc/skel/.xinitrc $HOME/
+
+    # pacman -S --noconfirm xf86-video-vesa xf86-input-synaptics
+    pacman -S --noconfirm virtualbox-guest-utils dkms linux-headers && \
+    systemctl enable vboxservice
