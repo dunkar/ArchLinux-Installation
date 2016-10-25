@@ -37,3 +37,7 @@ script that I could run remotely once a basic live environment was running.
   pacman -Sy --noconfirm openssh && systemctl start sshd
   ```
 - Execute the `start.sh` script.
+- Upon completion of the `start.sh`, the target system will shutdown. Remove the
+  installation media and start the target system.
+- Login using the root account with the password `root`.
+- Run any other desired scripts from the `/root/bin` folder.
