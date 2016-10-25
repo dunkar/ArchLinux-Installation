@@ -25,17 +25,17 @@ script that I could run remotely once a basic live environment was running.
 - Boot target system with an Arch Linux dual iso.
 - Identify the IP Address of the target system.
 ```shell
-  ip addr
+ip addr
 ```
 - Set the value in the `start.sh` script.
 - Set the password for the root account:
-  ```shell
-  passwd root
-  ```
+```shell
+passwd root
+```
 - Install and start openssh:
-  ```shell
-  pacman -Sy --noconfirm openssh && systemctl start sshd
-  ```
+```shell
+pacman -Sy --noconfirm openssh && systemctl start sshd
+```
 - Execute the `start.sh` script.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove the
   installation media and start the target system.
