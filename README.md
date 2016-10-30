@@ -22,7 +22,7 @@ script that I could run remotely once a basic live environment was running.
 
 # Instructions
 1. Add any desired scripts for the target system in the `bin` folder. They will be copied to the target system during installation.
-- Boot target system with an Arch Linux dual iso.
+- Boot target system with an Arch Linux dual iso (available [here](http://mirror.rackspace.com/archlinux/iso/latest/)).
 - Identify the IP Address of the target system.
 ```shell
 ip addr
