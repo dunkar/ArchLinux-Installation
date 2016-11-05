@@ -27,8 +27,8 @@ script that I could run remotely once a basic live environment was running.
 ```shell
 ip addr
 ```
-- Set the value in the `start.sh` script.
-- Set the password for the root account:
+- Set the `ip_addr` variable in the `start.sh` script.
+- Set the password for the root account in the TEMPORARY live instance:
 ```shell
 passwd root
 ```
@@ -36,8 +36,10 @@ passwd root
 ```shell
 pacman -Sy --noconfirm openssh && systemctl start sshd
 ```
-- Execute the `start.sh` script.
+- From a networked computer within a bash shell, execute the `start.sh` script.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove the
   installation media and start the target system.
 - Login using the root account with the password `root`.
 - Run any other desired scripts from the `/root/bin` folder.
+- Update the passwords for the `root` and `user` accounts.
+- Perform any other hardening and configuration steps you desire.
