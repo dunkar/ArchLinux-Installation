@@ -5,11 +5,14 @@ document the actions in a basic note file. I decided to convert my notes into a
 script that I could run remotely once a basic live environment was running.
 
 #### Assumptions, personal choices, and oddities:
+ - The install script is intended to run remotely because scripted installations
+   are often not using a comfortable or ergonomic seating arrangement.
  - Resulting target system is NOT secure. This script gets a basic installation
    that should be hardened at your earliest convenience.
    - root account is disabled
-   - user account has sudo access
-   - user account password is `user`
+   - default user account has sudo access
+   - The default user is `user` with a password of `user`. This is configurable.
+ - Linux partitions are formatted as ext2 (non-journaling). This is configurable.
  - EFI systems use GPT partitions.
    - Some EFI implementations, including VirtualBox (as of this writing) cannot
      use the default grubx64.efi file so it is renamed to bootx64.efi.
@@ -21,6 +24,9 @@ script that I could run remotely once a basic live environment was running.
    - On SSDs, writes are spread across the entire partition rather than
      focused in a dedicated partition space.
    - On HDDs, the physical head movement is reduced.
+ - The `bin` folder contains scripts that are copied to the /root/bin folder
+   on the target system. You can add any additional scripts needed before
+   installation.
 
 
 # Instructions
@@ -42,9 +48,9 @@ passwd root
 pacman -Sy --noconfirm openssh && systemctl start sshd
 ```
 - From a networked computer with a bash shell, execute the `start.sh` script.
+  Remember to configure the target system IP Address.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove
   the installation media and start the target system.
-- Login using the account `user` with the password `user`.
+- Login using the default user account.
 - Run any other desired scripts from the `/root/bin` folder with `sudo`.
-- Update the password for the `user` account.
 - Perform any other hardening and configuration steps you desire.

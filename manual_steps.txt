@@ -1,9 +1,9 @@
 # Setup BIOS/MBR partitions
     parted -s /dev/sda \
     mktable msdos \
-    mkpart p ext4 0% 100%
+    mkpart p ext2 0% 100%
 
-    mkfs.ext4 /dev/sda1
+    mkfs.ext2 /dev/sda1
 
     mount /dev/sda1 /mnt
 
@@ -11,10 +11,10 @@
     parted -s /dev/sda \
     mktable gpt \
     mkpart p fat32 1M 200M \
-    mkpart p ext4 200M 100%
+    mkpart p ext2 200M 100%
 
     mkfs.vfat /dev/sda1
-    mkfs.ext4 /dev/sda2
+    mkfs.ext2 /dev/sda2
 
     mount /dev/sda2 /mnt
     mkdir /mnt/boot
