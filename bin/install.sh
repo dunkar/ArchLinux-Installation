@@ -84,27 +84,28 @@ else
 fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
+# Setup users ##################################################################
 # Configure default user
 mkdir /etc/skel/bin
+
 cat >> /etc/skel/bin/env.sh << EEOF
 alias ll='ls -l'
 alias lla='ls -la'
 EEOF
+
 cat >> /etc/skel/.bashrc << EEOF
+
 if [ -f ~/bin/env.sh ]; then
   . ~/bin/env.sh
 fi
-EEOF
-#echo "if [ -f \~/bin/env.sh ]; then" >> /etc/skel/.bashrc
-#echo "  . \~/bin/env.sh" >> /etc/skel/.bashrc
-#echo "fi" >> /etc/skel/.bashrc
 
-# Setup users ##################################################################
+EEOF
+
 echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/01_wheel_group
 useradd -m -s /bin/bash -G wheel,storage,power,adm,disk user && \
   echo user:user | chpasswd && \
   usermod -p '!' root
-#echo root:root | chpasswd
+
 EOF
 
 shutdown -h now

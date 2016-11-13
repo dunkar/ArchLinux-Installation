@@ -15,3 +15,8 @@ $VBOX && \
     systemctl start vboxservice
 echo "exec startxfce4" >> /etc/skel/.xinitrc && \
     cp /etc/skel/.xinitrc /home/user/
+
+xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
+xfconf-query --channel thunar --property /default-view --create --type string --set ThunarDetailsView
+xfconf-query --create --channel xfce4-panel --property /plugins/plugin-8/timezone --create --type string --set US/Central
+synclient PalmDetect=1
