@@ -67,7 +67,9 @@ mkdir -p /mnt/etc/sysctl.d
 echo 'vm.swappiness = 1' >> /mnt/etc/sysctl.d/99-sysctl.conf
 
 # Change-root and configuration ################################################
-mv /tmp/bin /mnt/root/
+if [ -d /tmp/bin ]; then
+    mv /tmp/bin /mnt/root/
+fi
 arch-chroot /mnt /bin/bash << EOF
 echo "Starting stage 2: Configuration"
 
