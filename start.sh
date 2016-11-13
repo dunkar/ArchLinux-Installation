@@ -15,4 +15,4 @@ ip_addr=10.0.3.${1}
 #   4. Switch to another workstation with the install scripts and type:
 ssh_options='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 scp -r $ssh_options bin root@${ip_addr}:/tmp/
-time ssh $ssh_options root@${ip_addr} /bin/bash < install.sh
+time ssh $ssh_options root@${ip_addr} /bin/bash < bin/install.sh
