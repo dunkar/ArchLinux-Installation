@@ -1,12 +1,12 @@
 # Pass scripted responses to an interactive command:
-command [arguments] <<EOF
+command [arguments] << EOF
 response1
 response2
 etc.
 EOF
 
 # Pass scripted commands to a chroot session:
-arch-chroot /mnt /bin/bash <<EOF
+arch-chroot /mnt /bin/bash << EOF
 command1
 command2
 etc.
