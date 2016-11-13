@@ -44,7 +44,7 @@ pacman -Sy --noconfirm openssh && systemctl start sshd
 - From a networked computer with a bash shell, execute the `start.sh` script.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove
   the installation media and start the target system.
-- Login using the root account with the password `root`.
-- Run any other desired scripts from the `/root/bin` folder.
-- Update the passwords for the `root` and `user` accounts.
+- Login using the account `user` with the password `user`.
+- Run any other desired scripts from the `/root/bin` folder with `sudo`.
+- Update the password for the `user` account.
 - Perform any other hardening and configuration steps you desire.
