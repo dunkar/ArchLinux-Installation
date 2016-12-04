@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Preferences ##################################################################
+target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
 linux_filesystem=ext2
 timezone=US/Central
@@ -72,6 +73,7 @@ if [ -d /tmp/bin ]; then
 fi
 arch-chroot /mnt /bin/bash << EOF
 echo "Starting stage 2: Configuration"
+echo $target_hostname > /etc/hostname
 
 # Localization #################################################################
 sed -i 's/#\(en_US.UTF-8\)/\1/' /etc/locale.gen
