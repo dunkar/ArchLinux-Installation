@@ -3,7 +3,7 @@
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
 
 # Install packages
-packages='xorg-server gvfs alsa-utils xfce4'
+packages='xorg-server gvfs alsa-utils xfce4 mesa'
 $VBOX && \
     packages="$packages virtualbox-guest-utils dkms linux-headers" || \
     packages="$packages xf86-input-all xf86-video-vesa"
@@ -15,6 +15,8 @@ $VBOX && \
     systemctl start vboxservice
 echo "exec startxfce4" >> /etc/skel/.xinitrc && \
     cp /etc/skel/.xinitrc /home/user/
+    
+amixer sset Master unmute
 
 xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
 xfconf-query --channel thunar --property /default-view --create --type string --set ThunarDetailsView
