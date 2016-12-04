@@ -6,7 +6,7 @@ script that I could run remotely once a basic live environment was running.
 
 #### Assumptions, personal choices, and oddities:
  - The install script is intended to run remotely because scripted installations
-   are often not using a comfortable or ergonomic seating arrangement.
+   are often not using a comfortable or ergonomic seating arrangement. Think server rack, secondary KVM, or virtual machine with the default screen size.
  - Resulting target system is NOT secure. This script gets a basic installation
    that should be hardened at your earliest convenience.
    - root account is disabled
@@ -39,7 +39,8 @@ script that I could run remotely once a basic live environment was running.
 ip addr
 ```
 - Set the `ip_addr` variable in the `start.sh` script.
-- Set the password for the root account in the TEMPORARY live instance:
+  - Note: The current configuration allows you to pass a parameter representing the last octet to the default IP scheme used in Virtualbox with a Host Only network configuration.
+- Set the password for the root account in the TEMPORARY live instance. This password will not survive the post-installation reboot:
 ```shell
 passwd root
 ```
@@ -47,8 +48,8 @@ passwd root
 ```shell
 pacman -Sy --noconfirm openssh && systemctl start sshd
 ```
-- From a networked computer with a bash shell, execute the `start.sh` script.
-  Remember to configure the target system IP Address.
+- From a working computer with a bash shell and network access to the target system, execute the `start.sh` script.
+  Remember to configure the target system IP Address or pass the last octet.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove
   the installation media and start the target system.
 - Login using the default user account.
