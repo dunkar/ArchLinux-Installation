@@ -3,7 +3,7 @@
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
 
 # Install packages
-packages='xorg-server xorg-utils mesa gvfs alsa-utils xfce4 lightdm'
+packages='xorg-server xorg-utils mesa gvfs alsa-utils xfce4 slim'
 $VBOX && \
     packages="$packages virtualbox-guest-utils dkms linux-headers" || \
     packages="$packages xf86-input-all xf86-video-vesa"
