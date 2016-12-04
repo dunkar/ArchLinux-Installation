@@ -3,7 +3,7 @@
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
 
 # Install packages
-packages='xorg-server gvfs alsa-utils xfce4 mesa'
+packages='xorg-server xorg-utils mesa gvfs alsa-utils xfce4 lightdm'
 $VBOX && \
     packages="$packages virtualbox-guest-utils dkms linux-headers" || \
     packages="$packages xf86-input-all xf86-video-vesa"
@@ -16,6 +16,7 @@ $VBOX && \
 echo "exec startxfce4" >> /etc/skel/.xinitrc && \
     cp /etc/skel/.xinitrc /home/user/
     
+systemctl enable lightdm
 amixer sset Master unmute
 
 xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
