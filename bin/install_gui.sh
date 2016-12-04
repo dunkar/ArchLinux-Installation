@@ -19,7 +19,7 @@ echo "exec startxfce4" >> /etc/skel/.xinitrc && \
 systemctl enable lightdm
 amixer sset Master unmute
 
-xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
-xfconf-query --channel thunar --property /default-view --create --type string --set ThunarDetailsView
-xfconf-query --create --channel xfce4-panel --property /plugins/plugin-8/timezone --create --type string --set US/Central
-synclient PalmDetect=1
+#xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
+#xfconf-query --channel thunar --property /default-view --create --type string --set ThunarDetailsView
+#xfconf-query --create --channel xfce4-panel --property /plugins/plugin-8/timezone --create --type string --set US/Central
+#synclient PalmDetect=1
