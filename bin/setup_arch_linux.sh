@@ -7,6 +7,8 @@ linux_filesystem=ext2
 timezone=US/Central
 default_username=user
 default_password=user
+install_gui=true
+install_productivity_apps=false
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -44,6 +46,7 @@ fi
 
 # Setup swap file ##############################################################
 dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
+#fallocate -l 1024M /mnt/swapfile
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
@@ -114,6 +117,9 @@ echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/01_wheel_group
 useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   echo ${default_username}:${default_password} | chpasswd && \
   usermod -p '!' root
+
+${install_gui} && bash < /root/bin/install_gui.sh
+${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
 
 EOF
 
