@@ -14,9 +14,7 @@ $VBOX && \
 if [ "${display_manager}" == "slim" ]; then
     packages="${packages} slim"
     dm_service="slim.service"
-fi
-
-if [ "${display_manager}" == "lightdm" ]; then
+elif [ "${display_manager}" == "lightdm" ]; then
     packages="${packages} lightdm lightdm-gtk-greeter"
     dm_service="lightdm.service"
 fi
@@ -36,10 +34,3 @@ echo "exec ${init_exec}" >> /etc/skel/.xinitrc && \
 
 systemctl enable ${dm_service}
 amixer sset Master unmute
-
-#xfconf-query --channel thunar --property /misc-full-path-in-title --create --type bool --set true
-#xfconf-query --channel thunar --property /default-view --create --type string --set ThunarDetailsView
-#xfconf-query --create --channel xfce4-panel --property /plugins/plugin-8/timezone --create --type string --set US/Central
-#synclient PalmDetect=1
-
-# reboot
