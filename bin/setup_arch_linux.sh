@@ -7,7 +7,7 @@ linux_filesystem=ext2
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true
+install_gui=false
 install_productivity_apps=false
 
 echo "Starting stage 1: Partitioning and Base Packages"
@@ -46,7 +46,7 @@ fi
 
 # Setup swap file ##############################################################
 dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
-#fallocate -l 1024M /mnt/swapfile
+#fallocate -l 1024M /mnt/swapfile # This would be much faster, but did not work.
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
@@ -63,6 +63,7 @@ packages='base grub sudo'
 $EFI && packages="$packages efibootmgr"
 $WIFI && packages="$packages iw wpa_supplicant dialog"
 pacstrap /mnt $packages
+pacstrap --no-check-certificate /mnt $packages
 genfstab -Up /mnt >> /mnt/etc/fstab
 
 # Configure swap ###############################################################
