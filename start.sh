@@ -10,7 +10,7 @@
 #   3. Start SSH:
 #       <<systemctl start sshd>>
 #   4. Switch to another workstation with the install scripts and type:
-#       <<./start.sh IP.ADDR.OF.TARGET
+#       <<./start.sh IP.ADDR.OF.TARGET>>
 
 
 ip_addr=${1}
