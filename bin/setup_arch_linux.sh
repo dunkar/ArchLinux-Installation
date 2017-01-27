@@ -3,12 +3,12 @@
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-linux_filesystem=ext2
+linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false
-install_productivity_apps=false
+install_gui=true
+install_productivity_apps=true
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -22,6 +22,7 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 [ ${wifi_count} -gt 0 ] && WIFI=true || WIFI=false
 
 # Partitioning hard drive ######################################################
+
 if $EFI; then
     parted -s /dev/${target_disk_device} \
     mktable gpt \
@@ -34,13 +35,17 @@ if $EFI; then
     mount /dev/${target_disk_device}2 /mnt
     mkdir /mnt/boot
     mount /dev/${target_disk_device}1 /mnt/boot
+# elif $GPT; then
+#     target_disk_size=$(cat /proc/partitions | grep "${target_disk_device}" | awk '{print $3}') # KB
+#     linux_size=$(( target_disk_size - 1024 ))
+#     ef02_size=1024
+
 else
     parted -s /dev/${target_disk_device} \
     mktable msdos \
     mkpart p ${linux_filesystem} 2048s 100%
 
     mkfs.${linux_filesystem} /dev/${target_disk_device}1
-
     mount /dev/${target_disk_device}1 /mnt
 fi
 
@@ -73,7 +78,7 @@ echo 'vm.swappiness = 1' >> /mnt/etc/sysctl.d/99-sysctl.conf
 
 # Change-root and configuration ################################################
 if [ -d /tmp/bin ]; then
-    mv /tmp/bin /mnt/root/
+    cp -r /tmp/bin /mnt/root/
 fi
 arch-chroot /mnt /bin/bash << EOF
 echo "Starting stage 2: Configuration"

@@ -14,6 +14,11 @@
 
 
 ip_addr=${1}
-ssh_options='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-scp -r $ssh_options bin root@${ip_addr}:/tmp/
-time ssh $ssh_options root@${ip_addr} /tmp/bin/setup_arch_linux.sh
+if [[ "${ip_addr}" = "local" ]]; then
+    cp -r bin /tmp/
+    time /tmp/bin/setup_arch_linux.sh
+else
+    ssh_options='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+    scp -r $ssh_options bin root@${ip_addr}:/tmp/
+    time ssh $ssh_options root@${ip_addr} /tmp/bin/setup_arch_linux.sh
+fi
