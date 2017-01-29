@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-packages="chromium firefox terminator git atom mousepad"
-
-sudo pacman -S --noconfirm $packages
+sudo pacman -S --noconfirm chromium firefox terminator git atom mousepad

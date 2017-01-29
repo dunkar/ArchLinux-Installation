@@ -27,6 +27,8 @@ script that I could run remotely once a basic live environment was running.
  - The `bin` folder contains scripts that are copied to the /root/bin folder
    on the target system. You can add any additional scripts needed before
    installation.
+   - Scripts named `configure_user_*.sh` will be copied to the `/etc/skel/bin/`
+   folder so each new user automatically have access.
 
 
 # Instructions

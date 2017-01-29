@@ -7,8 +7,8 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true
-install_productivity_apps=true
+install_gui=true               # Execute the bin/install_gui.sh script
+install_productivity_apps=true # Execute the bin/install_productivity_apps.sh script
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -22,12 +22,12 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 [ ${wifi_count} -gt 0 ] && WIFI=true || WIFI=false
 
 # Partitioning hard drive ######################################################
-
 if $EFI; then
     parted -s /dev/${target_disk_device} \
     mktable gpt \
     mkpart p fat32 2048s 201MiB \
-    mkpart p ${linux_filesystem} 201MiB 100%
+    mkpart p ${linux_filesystem} 201MiB 100% \
+    set 1 boot on
 
     mkfs.vfat /dev/${target_disk_device}1
     mkfs.${linux_filesystem} /dev/${target_disk_device}2
@@ -35,19 +35,16 @@ if $EFI; then
     mount /dev/${target_disk_device}2 /mnt
     mkdir /mnt/boot
     mount /dev/${target_disk_device}1 /mnt/boot
-# elif $GPT; then
-#     target_disk_size=$(cat /proc/partitions | grep "${target_disk_device}" | awk '{print $3}') # KB
-#     linux_size=$(( target_disk_size - 1024 ))
-#     ef02_size=1024
-
 else
     parted -s /dev/${target_disk_device} \
     mktable msdos \
-    mkpart p ${linux_filesystem} 2048s 100%
+    mkpart p ${linux_filesystem} 2048s 100% \
+    set 1 boot on
 
     mkfs.${linux_filesystem} /dev/${target_disk_device}1
     mount /dev/${target_disk_device}1 /mnt
 fi
+#exit
 
 # Setup swap file ##############################################################
 dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
@@ -68,7 +65,7 @@ packages='base grub sudo'
 $EFI && packages="$packages efibootmgr"
 $WIFI && packages="$packages iw wpa_supplicant dialog"
 pacstrap /mnt $packages
-pacstrap --no-check-certificate /mnt $packages
+#pacstrap --no-check-certificate /mnt $packages
 genfstab -Up /mnt >> /mnt/etc/fstab
 
 # Configure swap ###############################################################
@@ -103,12 +100,17 @@ fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup users ##################################################################
-# Configure default user
+# Configure default user profile
 mkdir /etc/skel/bin
+
+cp /root/bin/configure_user_*.sh /etc/skel/bin/
 
 cat >> /etc/skel/bin/env.sh << EEOF
 alias ll='ls -l'
 alias lla='ls -la'
+alias install='sudo pacman -S'
+alias uninstall='sudo pacman -R'
+alias update='sudo pacman -Syu'
 EEOF
 
 cat >> /etc/skel/.bashrc << EEOF
