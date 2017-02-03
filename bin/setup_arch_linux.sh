@@ -3,12 +3,13 @@
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
+GPT=true
 linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true               # Execute the bin/install_gui.sh script
-install_productivity_apps=true # Execute the bin/install_productivity_apps.sh script
+install_gui=false               # Execute the bin/install_gui.sh script
+install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -23,6 +24,7 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 
 # Partitioning hard drive ######################################################
 if $EFI; then
+    # EFI & GPT
     parted -s /dev/${target_disk_device} \
     mktable gpt \
     mkpart p fat32 2048s 201MiB \
@@ -35,7 +37,19 @@ if $EFI; then
     mount /dev/${target_disk_device}2 /mnt
     mkdir /mnt/boot
     mount /dev/${target_disk_device}1 /mnt/boot
+elif $GPT; then
+    # BIOS & GPT
+    parted -s /dev/${target_disk_device} \
+    mktable gpt \
+    mkpart p 2048s 2MiB \
+    mkpart p ${linux_filesystem} 2MiB 100% \
+    set 1 bios_grub on
+    set 2 legacy_boot on
+
+    mkfs.${linux_filesystem} /dev/${target_disk_device}2
+    mount /dev/${target_disk_device}2 /mnt
 else
+    # BIOS & MBR
     parted -s /dev/${target_disk_device} \
     mktable msdos \
     mkpart p ${linux_filesystem} 2048s 100% \
@@ -44,15 +58,15 @@ else
     mkfs.${linux_filesystem} /dev/${target_disk_device}1
     mount /dev/${target_disk_device}1 /mnt
 fi
-#exit
 
 # Setup swap file ##############################################################
-dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
-#fallocate -l 1024M /mnt/swapfile # This would be much faster, but did not work.
+#dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
+fallocate -l 1024M /mnt/swapfile # This would be much faster, but did not work.
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
 swapon /mnt/swapfile
+#exit
 
 # Configure Pacman #############################################################
 mirror_preferences="country=US&protocol=https&ip_version=4&use_mirror_status=on"
