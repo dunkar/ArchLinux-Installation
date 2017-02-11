@@ -8,7 +8,7 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false               # Execute the bin/install_gui.sh script
+install_gui=true               # Execute the bin/install_gui.sh script
 install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
 
 echo "Starting stage 1: Partitioning and Base Packages"
@@ -116,9 +116,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # Setup users ##################################################################
 # Configure default user profile
 mkdir /etc/skel/bin
-
 cp /root/bin/configure_user_*.sh /etc/skel/bin/
-
 cat >> /etc/skel/bin/env.sh << EEOF
 alias ll='ls -l'
 alias lla='ls -la'
@@ -126,6 +124,7 @@ alias install='sudo pacman -S'
 alias uninstall='sudo pacman -R'
 alias update='sudo pacman -Syu'
 EEOF
+chmod u+x /etc/skel/bin/*
 
 cat >> /etc/skel/.bashrc << EEOF
 
