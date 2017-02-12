@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 desktop_environment="xfce4"   #Options: xfce4
-display_manager="lightdm"     #Options: lightdm, slim
+display_manager="slim"     #Options: lightdm, slim
 
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
 

@@ -3,7 +3,7 @@
 # Boot ArchLinux image (DVD, USB Flash Drive, etc.) on the target system
 #   1. Get the IP address of the target and set the variable below or pass it
 #       as a parameter.
-#   2. Change the root password. Later, you will be prompted for it twice, but
+#   2. Change the root password. You will be prompted for it twice, but
 #       this will only be for the live system and will not affect the
 #       installation.
 #       <<passwd>>

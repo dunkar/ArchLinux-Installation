@@ -3,7 +3,7 @@
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-GPT=true
+GPT=false
 linux_filesystem=ext4
 timezone=US/Central
 default_username=user
@@ -60,13 +60,11 @@ else
 fi
 
 # Setup swap file ##############################################################
-#dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
-fallocate -l 1024M /mnt/swapfile # This would be much faster, but did not work.
+fallocate -l 1024M /mnt/swapfile
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
 swapon /mnt/swapfile
-#exit
 
 # Configure Pacman #############################################################
 mirror_preferences="country=US&protocol=https&ip_version=4&use_mirror_status=on"
