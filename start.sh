@@ -20,5 +20,5 @@ if [[ "${ip_addr}" = "local" ]]; then
 else
     ssh_options='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
     scp -r $ssh_options bin root@${ip_addr}:/tmp/
-    time ssh $ssh_options root@${ip_addr} /tmp/bin/setup_arch_linux.sh
+    time ssh $ssh_options root:root@${ip_addr} /tmp/bin/setup_arch_linux.sh
 fi

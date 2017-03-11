@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+__version__=1.00.00
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
@@ -8,7 +9,7 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true               # Execute the bin/install_gui.sh script
+install_gui=false               # Execute the bin/install_gui.sh script
 install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
 
 echo "Starting stage 1: Partitioning and Base Packages"
@@ -143,3 +144,6 @@ ${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
 EOF
 
 shutdown -h now
+
+# Version History ##############################################################
+# 2017-03-11 1.00.00 Added version number
