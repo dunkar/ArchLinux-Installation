@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 __version__=1.00.00
+__date__=2017-03-11
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
