@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
-desktop_environment="xfce4"   #Options: xfce4
+desktop_environment="lxde"   #Options: xfce4, lxde
 display_manager="slim"     #Options: lightdm, slim
 
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
+
+pci_wifi_count=$(lspci | egrep -ic 'wifi|wlan|wireless')
+usb_wifi_count=$(lsusb | egrep -ic 'wifi|wlan|wireless')
+wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
+[ ${wifi_count} -gt 0 ] && WIFI=true || WIFI=false
 
 # Install packages
 packages="xorg-server xorg-utils mesa gvfs alsa-utils"
 $VBOX && \
     packages="${packages} virtualbox-guest-utils dkms linux-headers" || \
     packages="${packages} xf86-input-all xf86-video-vesa"
+$WIFI && packages="$packages wicd"
 
 if [ "${display_manager}" == "slim" ]; then
     packages="${packages} slim"
@@ -22,6 +28,9 @@ fi
 if [ "${desktop_environment}" == "xfce4" ]; then
     packages="${packages} xfce4 xfce4-whiskermenu-plugin mousepad"
     init_exec="startxfce4"
+elif [ "${desktop_environment}" == "lxde" ]; then
+        packages="${packages} lxde"
+        init_exec="startlxde"
 fi
 pacman -S --noconfirm $packages
 
