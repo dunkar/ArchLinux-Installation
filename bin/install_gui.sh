@@ -11,7 +11,7 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 [ ${wifi_count} -gt 0 ] && WIFI=true || WIFI=false
 
 # Install packages
-packages="xorg-server xorg-utils mesa gvfs alsa-utils"
+packages="xorg-server xorg-utils xdg-utils mesa gvfs alsa-utils"
 $VBOX && \
     packages="${packages} virtualbox-guest-utils dkms linux-headers" || \
     packages="${packages} xf86-input-all xf86-video-vesa"
@@ -29,7 +29,7 @@ if [ "${desktop_environment}" == "xfce4" ]; then
     packages="${packages} xfce4 xfce4-whiskermenu-plugin mousepad"
     init_exec="startxfce4"
 elif [ "${desktop_environment}" == "lxde" ]; then
-        packages="${packages} lxde"
+        packages="${packages} lxde-common lxsession openbox"
         init_exec="startlxde"
 fi
 pacman -S --noconfirm $packages
