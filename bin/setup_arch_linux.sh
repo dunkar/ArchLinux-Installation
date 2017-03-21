@@ -10,10 +10,10 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true               # Execute the bin/install_gui.sh script
+install_gui=false   # Execute the bin/install_gui.sh script
 install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
-shutdown_post_install=false    # Should the target system shutdown after installation?
-reboot_post_install=true       # Should the target system reboot after installation?
+shutdown_post_install=true  # Should the target system shutdown after installation?
+reboot_post_install=false   # Should the target system reboot after installation?
 
 echo "Starting stage 1: Partitioning and Base Packages"
 

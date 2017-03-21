@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-desktop_environment="lxde"   #Options: xfce4, lxde
+desktop_environment="xfce4"   #Options: xfce4, lxde
 display_manager="slim"     #Options: lightdm, slim
 
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
@@ -29,7 +29,7 @@ if [ "${desktop_environment}" == "xfce4" ]; then
     packages="${packages} xfce4 xfce4-whiskermenu-plugin mousepad"
     init_exec="startxfce4"
 elif [ "${desktop_environment}" == "lxde" ]; then
-        packages="${packages} lxde-common lxsession openbox"
+        packages="${packages} lxde" #lxde-common lxsession openbox are the minimum set, but they aren't working.
         init_exec="startlxde"
 fi
 pacman -S --noconfirm $packages
