@@ -63,6 +63,7 @@ passwd
   Remember to configure or pass the target system IP Address.
 - Upon completion of the `start.sh`, the target system will shutdown. Remove
   the installation media and start the target system.
+  - You can set the preferences to automatically reboot the target system after installation is complete.
 - Login using the default user account.
 - Run any other desired scripts from the `/root/bin` folder with `sudo`.
 - Perform any other hardening and configuration steps you desire.
