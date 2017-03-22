@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-__version__=1.00.00
-__date__=2017-03-11
+__version__=1.00.01
+__date__=2017-03-22
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-GPT=false
+GPT=true
 linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false   # Execute the bin/install_gui.sh script
+install_gui=false # Execute the bin/install_gui.sh script
 install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
-shutdown_post_install=true  # Should the target system shutdown after installation?
-reboot_post_install=false   # Should the target system reboot after installation?
+shutdown_post_install=true # Should the target system shutdown after installation?
+reboot_post_install=false # Should the target system reboot after installation?
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -120,11 +120,14 @@ grub-mkconfig -o /boot/grub/grub.cfg
 mkdir /etc/skel/bin
 cp /root/bin/configure_user_*.sh /etc/skel/bin/
 cat >> /etc/skel/bin/env.sh << EEOF
+export PS1='\n\u@\h\n${PWD}\n>'
 alias ll='ls -l'
 alias lla='ls -la'
 alias install='sudo pacman -S'
 alias uninstall='sudo pacman -R'
 alias update='sudo pacman -Syu'
+alias reboot='sudo shutdown -r now'
+alias shutdown='sudo shutdown -h now'
 [[ -f /usr/bin/env.sh ]] && source /usr/bin/env.sh
 EEOF
 chmod u+x /etc/skel/bin/*
@@ -152,3 +155,4 @@ ${reboot_post_install} && shutdown -r now
 
 # Version History ##############################################################
 # 2017-03-11 1.00.00 Added version number and date variables.
+# 2017-03-22 1.00.01 Added aliases, cleaned up comments, added prompt formatting.
