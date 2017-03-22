@@ -125,6 +125,7 @@ alias lla='ls -la'
 alias install='sudo pacman -S'
 alias uninstall='sudo pacman -R'
 alias update='sudo pacman -Syu'
+[[ -f /usr/bin/env.sh ]] && source /usr/bin/env.sh
 EEOF
 chmod u+x /etc/skel/bin/*
 
