@@ -120,7 +120,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 mkdir /etc/skel/bin
 cp /root/bin/configure_user_*.sh /etc/skel/bin/
 cat >> /etc/skel/bin/env.sh << EEOF
-export PS1='\n\u@\h\n${PWD}\n>'
+export PS1='\n\u@\h\n\${PWD}\n>'
 alias ll='ls -l'
 alias lla='ls -la'
 alias install='sudo pacman -S'

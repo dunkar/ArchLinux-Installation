@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-pacman -S --noconfirm python-pip && pip install virtualenvwrapper
+python_exec=python
+main_python_interpreter=$(which ${python_exec})
+
+[[ $(which pip) ]] || \
+pacman -S --noconfirm ${python_exec}-pip && \
+pip install virtualenvwrapper
 
 cat << EOF >> /usr/bin/env.sh
 # Python and VirtualEnv Settings:
-VIRTUALENVWRAPPER_PYTHON=\$(which python)
+VIRTUALENVWRAPPER_PYTHON=\$(which ${python_exec})
 
 WORKON_HOME=\${HOME}/VEs && \
 [ -d \$WORKON_HOME ] || \

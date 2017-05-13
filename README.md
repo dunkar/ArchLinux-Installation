@@ -37,19 +37,21 @@ an SSH session.
    installation. The script will remain post-installation for reference.
    - Scripts named `configure_user_*.sh` will be copied to the `/etc/skel/bin/`
    folder so each new user will automatically have access.
+   - The system will shutdown or reboot after installation is complete.
+   You can configure your preference in the Preferences section of the script.
 
 
 # Instructions
 1. Add any desired scripts for the target system in the `bin` folder.
   - The install_gui and install_productivity_apps scripts will be executed if
     the respective variables are set to true in the setup_arch_linux.sh script.
-- Boot target system with an Arch Linux dual iso (available [here](http://mirror.rackspace.com/archlinux/iso/latest/)).
-- Identify the IP Address of the target system.
+- Boot target system with an Arch Linux iso (available [here](http://mirror.rackspace.com/archlinux/iso/latest/)).
+- Identify and make note of the IP Address of the target system.
+  - You will need to set the `ip_addr` variable in the `start.sh` script.
+  - Note: You can also pass the ip address as a parameter.
 ```shell
 ip addr
 ```
-- Set the `ip_addr` variable in the `start.sh` script.
-  - Note: You can also pass the ip address as a parameter.
 - Start openssh:
 ```shell
 systemctl start sshd
