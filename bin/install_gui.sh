@@ -12,10 +12,10 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 
 # Install packages
 packages="xorg-server xdg-utils mesa gvfs alsa-utils xscreensaver"
-# Removed packages: xorg-utils 
+# Removed packages: xorg-utils
 $VBOX && \
     packages="${packages} virtualbox-guest-utils dkms linux-headers" || \
-    packages="${packages} xf86-input-all xf86-video-vesa"
+    packages="${packages} xf86-input-libinput xf86-video-vesa"
 $WIFI && packages="$packages wicd"
 
 if [ "${display_manager}" == "slim" ]; then

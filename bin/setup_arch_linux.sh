@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-__version__=1.00.01
-__date__=2017-03-22
+__version__=1.00.02
+__date__=2017-06-05
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
@@ -158,9 +158,7 @@ else
     echo "Live instance is still running"
 fi
 
-# ${shutdown_post_install} && shutdown -h now
-# ${reboot_post_install} && shutdown -r now
-
 # Version History ##############################################################
 # 2017-03-11 1.00.00 Added version number and date variables.
 # 2017-03-22 1.00.01 Added aliases, cleaned up comments, added prompt formatting.
+# 2017-06-05 1.00.02 Updated post_install_action.
