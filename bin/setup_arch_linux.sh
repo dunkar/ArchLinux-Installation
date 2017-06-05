@@ -119,17 +119,18 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # Configure default user profile
 mkdir /etc/skel/bin
 cp /root/bin/configure_user_*.sh /etc/skel/bin/
-cat >> /etc/skel/bin/env.sh << EEOF
-export PS1='\n\u@\h\n\${PWD}\n>'
-alias ll='ls -l'
-alias lla='ls -la'
-alias install='sudo pacman -S'
-alias uninstall='sudo pacman -R'
-alias update='sudo pacman -Syu'
-alias reboot='sudo shutdown -r now'
-alias shutdown='sudo shutdown -h now'
-[[ -f /usr/bin/env.sh ]] && source /usr/bin/env.sh
-EEOF
+cp /root/bin/env.sh /etc/skel/bin/
+# cat >> /etc/skel/bin/env.sh << EEOF
+# export PS1='\n\u@\h\n\w\n>'
+# alias ll='ls -l'
+# alias lla='ls -la'
+# alias install='sudo pacman -S'
+# alias uninstall='sudo pacman -R'
+# alias update='sudo pacman -Syu'
+# alias reboot='sudo shutdown -r now'
+# alias shutdown='sudo shutdown -h now'
+# [[ -f /usr/bin/env.sh ]] && source /usr/bin/env.sh
+# EEOF
 chmod u+x /etc/skel/bin/*
 
 cat >> /etc/skel/.bashrc << EEOF
