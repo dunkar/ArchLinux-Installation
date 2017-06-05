@@ -12,8 +12,7 @@ default_username=user
 default_password=user
 install_gui=false # Execute the bin/install_gui.sh script
 install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
-shutdown_post_install=true # Should the target system shutdown after installation?
-reboot_post_install=false # Should the target system reboot after installation?
+post_install_action=Shutdown # Shutdown, Reboot, None
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -71,7 +70,8 @@ sysctl -w vm.swappiness=1
 swapon /mnt/swapfile
 
 # Configure Pacman #############################################################
-mirror_preferences="country=US&protocol=https&ip_version=4&use_mirror_status=on"
+#mirror_preferences="country=US&protocol=https&ip_version=4&use_mirror_status=on"
+mirror_preferences="country=US"
 mirror_url="https://www.archlinux.org/mirrorlist/?${mirror_preferences}"
 wget -O /etc/pacman.d/mirrorlist ${mirror_url}
 sed -i 's/^#Server/Server/g' /etc/pacman.d/mirrorlist
@@ -150,8 +150,16 @@ ${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
 
 EOF
 
-${shutdown_post_install} && shutdown -h now
-${reboot_post_install} && shutdown -r now
+if [ $post_install_action == 'Shutdown' ]; then
+    shutdown -h now
+elif [ $post_install_action == 'Reboot' ]; then
+    shutdown -r now
+else
+    echo "Live instance is still running"
+fi
+
+# ${shutdown_post_install} && shutdown -h now
+# ${reboot_post_install} && shutdown -r now
 
 # Version History ##############################################################
 # 2017-03-11 1.00.00 Added version number and date variables.
