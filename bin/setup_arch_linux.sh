@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-__version__=1.00.02
-__date__=2017-06-05
+__version__=1.00.03
+__date__=2017-06-11
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-GPT=true
+GPT=false
 linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false # Execute the bin/install_gui.sh script
-install_productivity_apps=false # Execute the bin/install_productivity_apps.sh script
-post_install_action=Shutdown # Shutdown, Reboot, None
+install_gui=false                   # Run bin/install_gui.sh
+install_productivity_apps=false     # Run bin/install_productivity_apps.sh
+post_install_action=Shutdown        # Shutdown, Reboot, None
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -46,7 +46,7 @@ elif $GPT; then
     mktable gpt \
     mkpart p 2048s 2MiB \
     mkpart p ${linux_filesystem} 2MiB 100% \
-    set 1 bios_grub on
+    set 1 bios_grub on \
     set 2 legacy_boot on
 
     mkfs.${linux_filesystem} /dev/${target_disk_device}2
@@ -70,7 +70,6 @@ sysctl -w vm.swappiness=1
 swapon /mnt/swapfile
 
 # Configure Pacman #############################################################
-#mirror_preferences="country=US&protocol=https&ip_version=4&use_mirror_status=on"
 mirror_preferences="country=US"
 mirror_url="https://www.archlinux.org/mirrorlist/?${mirror_preferences}"
 wget -O /etc/pacman.d/mirrorlist ${mirror_url}
@@ -80,8 +79,7 @@ sed -i 's/^#Server/Server/g' /etc/pacman.d/mirrorlist
 packages='base grub sudo'
 $EFI && packages="$packages efibootmgr"
 $WIFI && packages="$packages iw wpa_supplicant dialog"
-pacstrap /mnt $packages
-#pacstrap --no-check-certificate /mnt $packages
+pacstrap /mnt $packages   #add --no-check-certificate parameter as needed.
 genfstab -Up /mnt >> /mnt/etc/fstab
 
 # Configure swap ###############################################################
@@ -115,22 +113,10 @@ else
 fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# Setup users ##################################################################
-# Configure default user profile
+# Setup default user profile ###################################################
 mkdir /etc/skel/bin
 cp /root/bin/configure_user_*.sh /etc/skel/bin/
 cp /root/bin/env.sh /etc/skel/bin/
-# cat >> /etc/skel/bin/env.sh << EEOF
-# export PS1='\n\u@\h\n\w\n>'
-# alias ll='ls -l'
-# alias lla='ls -la'
-# alias install='sudo pacman -S'
-# alias uninstall='sudo pacman -R'
-# alias update='sudo pacman -Syu'
-# alias reboot='sudo shutdown -r now'
-# alias shutdown='sudo shutdown -h now'
-# [[ -f /usr/bin/env.sh ]] && source /usr/bin/env.sh
-# EEOF
 chmod u+x /etc/skel/bin/*
 
 cat >> /etc/skel/.bashrc << EEOF
@@ -163,3 +149,4 @@ fi
 # 2017-03-11 1.00.00 Added version number and date variables.
 # 2017-03-22 1.00.01 Added aliases, cleaned up comments, added prompt formatting.
 # 2017-06-05 1.00.02 Updated post_install_action.
+# 2017-06-11 1.00.03 Moved env.sh code to external file.
