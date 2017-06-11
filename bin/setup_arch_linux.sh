@@ -10,7 +10,7 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false                   # Run bin/install_gui.sh
+install_gui=true                   # Run bin/install_gui.sh
 install_productivity_apps=false     # Run bin/install_productivity_apps.sh
 post_install_action=Shutdown        # Shutdown, Reboot, None
 

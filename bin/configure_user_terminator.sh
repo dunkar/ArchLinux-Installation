@@ -2,7 +2,7 @@
 # Global settings: /etc/xdg/xfce4/helpers.rc
 # Local settings: ${HOME}/.config/xfce4/helpers.rc
 
-[ $(which terminator) ] || sudo pacman -S --noconfirm terminator || exit 1
+[[ $(which terminator) ]] || install terminator || exit 1
 
 config_file_location=${HOME}/.config/terminator
 mkdir -p ${config_file_location}
@@ -26,5 +26,3 @@ cat << EOF >> ${config_file_location}/config
       parent = ""
 [plugins]
 EOF
-
-# sudo sed -i 's|^TerminalEmulator=.*$|TerminalEmulator=terminator|' ${HOME}/.config/xfce4/helpers.rc
