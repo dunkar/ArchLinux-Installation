@@ -2,7 +2,7 @@
 # Global settings: /etc/xdg/xfce4/helpers.rc
 # Local settings: ${HOME}/.config/xfce4/helpers.rc
 
-[[ $(which terminator) ]] || install terminator || exit 1
+[ -f /usr/bin/terminator ] || sudo pacman -S terminator || exit 1
 
 config_file_location=${HOME}/.config/terminator
 mkdir -p ${config_file_location}

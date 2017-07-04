@@ -6,3 +6,5 @@ alias uninstall='sudo pacman -R'
 alias update='sudo pacman -Syu'
 alias reboot='sudo shutdown -r now'
 alias shutdown='sudo shutdown -h now'
+
+[ -f /usr/bin/env.sh ] && . /usr/bin/env.sh

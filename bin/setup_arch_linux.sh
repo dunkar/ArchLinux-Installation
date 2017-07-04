@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-__version__=1.00.03
-__date__=2017-06-11
+__version__=1.00.04
+__date__=2017-07-01
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
@@ -10,7 +10,7 @@ linux_filesystem=ext4
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=true                   # Run bin/install_gui.sh
+install_gui=false                   # Run bin/install_gui.sh
 install_productivity_apps=false     # Run bin/install_productivity_apps.sh
 post_install_action=Shutdown        # Shutdown, Reboot, None
 
@@ -88,9 +88,8 @@ mkdir -p /mnt/etc/sysctl.d
 echo 'vm.swappiness = 1' >> /mnt/etc/sysctl.d/99-sysctl.conf
 
 # Change-root and configuration ################################################
-if [ -d /tmp/bin ]; then
-    cp -r /tmp/bin /mnt/root/
-fi
+[ -d /tmp/bin ] && cp -r /tmp/bin /mnt/root/
+
 arch-chroot /mnt /bin/bash << EOF
 echo "Starting stage 2: Configuration"
 echo $target_hostname > /etc/hostname
@@ -111,6 +110,7 @@ if $EFI; then
 else
     grub-install --target=i386-pc /dev/${target_disk_device}
 fi
+sed -i 's/^GRUB_TIMEOUT=5/GRUB_TIMEOUT=2/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup default user profile ###################################################
@@ -121,9 +121,7 @@ chmod u+x /etc/skel/bin/*
 
 cat >> /etc/skel/.bashrc << EEOF
 
-if [ -f ~/bin/env.sh ]; then
-  . ~/bin/env.sh
-fi
+[ -f ~/bin/env.sh ] && . ~/bin/env.sh
 
 EEOF
 
@@ -133,7 +131,7 @@ useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   usermod -p '!' root
 
 ${install_gui} && bash < /root/bin/install_gui.sh
-${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
+${install_gui} && ${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
 
 EOF
 
@@ -150,3 +148,4 @@ fi
 # 2017-03-22 1.00.01 Added aliases, cleaned up comments, added prompt formatting.
 # 2017-06-05 1.00.02 Updated post_install_action.
 # 2017-06-11 1.00.03 Moved env.sh code to external file.
+# 2017-07-01 1.00.04 Minor tweaks to Grub, Python and GUI installation.
