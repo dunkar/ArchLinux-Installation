@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-__version__=1.00.04
-__date__=2017-07-01
+__version__=1.00.05
+__date__=2017-07-07
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
@@ -63,7 +63,7 @@ else
 fi
 
 # Setup swap file ##############################################################
-fallocate -l 1024M /mnt/swapfile
+fallocate -l 2048M /mnt/swapfile
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
@@ -149,3 +149,4 @@ fi
 # 2017-06-05 1.00.02 Updated post_install_action.
 # 2017-06-11 1.00.03 Moved env.sh code to external file.
 # 2017-07-01 1.00.04 Minor tweaks to Grub, Python and GUI installation.
+# 2017-07-07 1.00.05 Added WARNING to readme file, changed default swap size.

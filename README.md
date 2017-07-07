@@ -6,6 +6,9 @@ script that I could run once a basic live environment was running. I have since
 modified the script to allow execution locally (from a usb stick) or remotly via
 an SSH session.
 
+WARNING: This script will wipe the target drive (sda by default) on the target
+system. You will not be prompted before this occurs.
+
 #### Assumptions, personal choices, and oddities:
  - The install script was originally designed to run remotely because scripted
      installations are often not using a comfortable or ergonomic seating
