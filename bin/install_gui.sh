@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-desktop_environment="xfce4"   #Options: xfce4, lxde
-display_manager="slim"     #Options: lightdm, slim
+desktop_environment="None"   #Options: xfce4, lxde, None
+display_manager="None"     #Options: lightdm, slim, None
 
 [[ $(lspci | grep VirtualBox) ]] && VBOX=true || VBOX=false
 
@@ -24,14 +24,18 @@ if [ "${display_manager}" == "slim" ]; then
 elif [ "${display_manager}" == "lightdm" ]; then
     packages="${packages} lightdm lightdm-gtk-greeter"
     dm_service="lightdm.service"
+elif [ "${display_manager}" == "None" ]; then
+    dm_service=false
 fi
 
 if [ "${desktop_environment}" == "xfce4" ]; then
     packages="${packages} xfce4 xfce4-whiskermenu-plugin xfce4-pulseaudio-plugin mousepad"
     init_exec="startxfce4"
 elif [ "${desktop_environment}" == "lxde" ]; then
-        packages="${packages} lxde" #lxde-common lxsession openbox are the minimum set, but they aren't working.
-        init_exec="startlxde"
+    packages="${packages} lxde" #lxde-common lxsession openbox are the minimum set, but they aren't working.
+    init_exec="startlxde"
+elif [ "${desktop_environment}" == "None" ]; then
+    init_exec=false
 fi
 pacman -S --noconfirm $packages
 
@@ -39,8 +43,9 @@ pacman -S --noconfirm $packages
 $VBOX && \
     systemctl enable vboxservice && \
     systemctl start vboxservice
-echo "exec ${init_exec}" >> /etc/skel/.xinitrc && \
+${init_exec} && \
+    echo "exec ${init_exec}" >> /etc/skel/.xinitrc && \
     cp /etc/skel/.xinitrc /home/user/
 
-systemctl enable ${dm_service}
+${dm_service} && systemctl enable ${dm_service}
 amixer sset Master unmute

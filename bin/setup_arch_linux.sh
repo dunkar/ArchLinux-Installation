@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-__version__=1.00.05
-__date__=2017-07-07
+__version__=1.00.06
+__date__=2017-07-08
 
 # Preferences ##################################################################
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-GPT=false
+GPT=true
 linux_filesystem=ext4
+grub_timeout=0
 timezone=US/Central
 default_username=user
 default_password=user
@@ -110,7 +111,7 @@ if $EFI; then
 else
     grub-install --target=i386-pc /dev/${target_disk_device}
 fi
-sed -i 's/^GRUB_TIMEOUT=5/GRUB_TIMEOUT=2/' /etc/default/grub
+sed -i "s/^GRUB_TIMEOUT=5/GRUB_TIMEOUT=${grub_timeout}/" /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup default user profile ###################################################
@@ -150,3 +151,4 @@ fi
 # 2017-06-11 1.00.03 Moved env.sh code to external file.
 # 2017-07-01 1.00.04 Minor tweaks to Grub, Python and GUI installation.
 # 2017-07-07 1.00.05 Added WARNING to readme file, changed default swap size.
+# 2017-07-08 1.00.06 Cleared Grub default timeout, added option of no DE or DM to gui.
