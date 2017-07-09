@@ -21,7 +21,8 @@
     mount /dev/sda1 /mnt/boot
 
 # Create swapfile
-    dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
+    #dd if=/dev/zero of=/mnt/swapfile bs=1M count=1024
+    fallocate -l 1024M /mnt/swapfile
     chmod 0600 /mnt/swapfile
     mkswap /mnt/swapfile
     swapon /mnt/swapfile
