@@ -100,6 +100,7 @@ sed -i 's/#\(en_US.UTF-8\)/\1/' /etc/locale.gen
 echo LANG="en_US.UTF-8" > /etc/locale.conf
 locale-gen
 ln -fs /usr/share/zoneinfo/${timezone} /etc/localtime
+hwclock --systohc --utc
 
 # Autostart daemons ############################################################
 systemctl enable dhcpcd
