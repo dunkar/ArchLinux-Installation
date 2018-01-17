@@ -79,7 +79,7 @@ sed -i 's/^#Server/Server/g' /etc/pacman.d/mirrorlist
 # Install base packages ########################################################
 packages='base grub sudo'
 $EFI && packages="$packages efibootmgr"
-$WIFI && packages="$packages iw wpa_supplicant dialog"
+$WIFI && packages="$packages iw wpa_supplicant dialog rfkill"
 pacstrap /mnt $packages   #add --no-check-certificate parameter as needed.
 genfstab -Up /mnt >> /mnt/etc/fstab
 
