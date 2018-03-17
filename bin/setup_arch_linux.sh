@@ -12,7 +12,6 @@ timezone=US/Central
 default_username=user
 default_password=user
 install_gui=false                   # Run bin/install_gui.sh
-install_productivity_apps=false     # Run bin/install_productivity_apps.sh
 post_install_action=Shutdown        # Shutdown, Reboot, None
 
 echo "Starting stage 1: Partitioning and Base Packages"
@@ -133,7 +132,6 @@ useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   usermod -p '!' root
 
 ${install_gui} && bash < /root/bin/install_gui.sh
-${install_gui} && ${install_productivity_apps} && bash < /root/bin/install_productivity_apps.sh
 
 EOF
 
@@ -153,3 +151,4 @@ fi
 # 2017-07-01 1.00.04 Minor tweaks to Grub, Python and GUI installation.
 # 2017-07-07 1.00.05 Added WARNING to readme file, changed default swap size.
 # 2017-07-08 1.00.06 Cleared Grub default timeout, added option of no DE or DM to gui.
+# 2018-03-17 1.00.07 Removed the productivity apps script references
