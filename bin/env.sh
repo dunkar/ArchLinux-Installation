@@ -1,4 +1,4 @@
-export PS1='\n\u@\h\n${PWD}\n>'
+export PS1='\n\u@\h\n${PWD}\nsh>'
 alias ll='ls -l'
 alias lla='ls -la'
 alias install='sudo pacman -S'
