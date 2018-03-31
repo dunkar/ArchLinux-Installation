@@ -11,7 +11,6 @@ grub_timeout=0
 timezone=US/Central
 default_username=user
 default_password=user
-install_gui=false                   # Run bin/install_gui.sh
 post_install_action=Shutdown        # Shutdown, Reboot, None
 
 echo "Starting stage 1: Partitioning and Base Packages"
@@ -88,7 +87,8 @@ mkdir -p /mnt/etc/sysctl.d
 echo 'vm.swappiness = 1' >> /mnt/etc/sysctl.d/99-sysctl.conf
 
 # Change-root and configuration ################################################
-[ -d /tmp/bin ] && cp -r /tmp/bin /mnt/root/
+mkdir -p /mnt/home/Public/bin
+[ -d /tmp/bin ] && cp -r /tmp/bin /mnt/home/Public
 
 arch-chroot /mnt /bin/bash << EOF
 echo "Starting stage 2: Configuration"
@@ -116,8 +116,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup default user profile ###################################################
 mkdir /etc/skel/bin
-cp /root/bin/configure_user_*.sh /etc/skel/bin/
-cp /root/bin/env.sh /etc/skel/bin/
+cp /home/Public/bin/configure_user_*.sh /etc/skel/bin/
+cp /home/Public/bin/env.sh /etc/skel/bin/
 chmod u+x /etc/skel/bin/*
 
 cat >> /etc/skel/.bashrc << EEOF
@@ -130,8 +130,6 @@ echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/01_wheel_group
 useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   echo ${default_username}:${default_password} | chpasswd && \
   usermod -p '!' root
-
-${install_gui} && bash < /root/bin/install_gui.sh
 
 EOF
 
