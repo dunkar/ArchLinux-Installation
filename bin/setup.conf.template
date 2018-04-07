@@ -1,0 +1,17 @@
+__version__=0.01.00
+__date__=2018-04-07
+
+# Preferences ##################################################################
+# Make a copy of this file without the .template extension and configure it for
+# needs. This will be sourced by the setup_arch_linux.sh shell script.
+#
+
+target_hostname=ArchLinux-$RANDOM
+target_disk_device=sda
+GPT=true
+linux_filesystem=ext4
+grub_timeout=3
+timezone=US/Central
+default_username=
+default_password=
+post_install_action=Shutdown        # Shutdown, Reboot, None

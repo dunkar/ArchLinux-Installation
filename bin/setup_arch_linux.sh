@@ -1,17 +1,8 @@
 #!/usr/bin/env bash
-__version__=1.00.06
-__date__=2017-07-08
+__version__=1.00.08
+__date__=2018-04-07
 
-# Preferences ##################################################################
-target_hostname=ArchLinux-$RANDOM
-target_disk_device=sda
-GPT=true
-linux_filesystem=ext4
-grub_timeout=0
-timezone=US/Central
-default_username=user
-default_password=user
-post_install_action=Shutdown        # Shutdown, Reboot, None
+source /tmp/bin/setup.conf
 
 echo "Starting stage 1: Partitioning and Base Packages"
 
@@ -26,7 +17,7 @@ wifi_count=$(( $pci_wifi_count + $usb_wifi_count ))
 
 # Partitioning hard drive ######################################################
 if $EFI; then
-    # EFI & GPT
+    # EFI & GPT - 200MB EFI, remaining for linux
     parted -s /dev/${target_disk_device} \
     mktable gpt \
     mkpart p fat32 2048s 201MiB \
@@ -40,7 +31,7 @@ if $EFI; then
     mkdir /mnt/boot
     mount /dev/${target_disk_device}1 /mnt/boot
 elif $GPT; then
-    # BIOS & GPT
+    # BIOS & GPT - 1MB legacy boot, remaining for linux
     parted -s /dev/${target_disk_device} \
     mktable gpt \
     mkpart p 2048s 2MiB \
@@ -51,7 +42,7 @@ elif $GPT; then
     mkfs.${linux_filesystem} /dev/${target_disk_device}2
     mount /dev/${target_disk_device}2 /mnt
 else
-    # BIOS & MBR
+    # BIOS & MBR - 100% for linux
     parted -s /dev/${target_disk_device} \
     mktable msdos \
     mkpart p ${linux_filesystem} 2048s 100% \
@@ -75,7 +66,7 @@ wget -O /etc/pacman.d/mirrorlist ${mirror_url}
 sed -i 's/^#Server/Server/g' /etc/pacman.d/mirrorlist
 
 # Install base packages ########################################################
-packages='base grub sudo'
+packages='base grub sudo' # linux-lts linux-lts-headers'
 $EFI && packages="$packages efibootmgr"
 $WIFI && packages="$packages iw wpa_supplicant dialog rfkill"
 pacstrap /mnt $packages   #add --no-check-certificate parameter as needed.
@@ -115,14 +106,11 @@ sed -i "s/^GRUB_TIMEOUT=5/GRUB_TIMEOUT=${grub_timeout}/" /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Setup default user profile ###################################################
-mkdir /etc/skel/bin
-cp /home/Public/bin/configure_user_*.sh /etc/skel/bin/
-cp /home/Public/bin/env.sh /etc/skel/bin/
-chmod u+x /etc/skel/bin/*
-
+ln -s /home/Public /etc/skel/Public
+cp /home/Public/bin/env.sh /etc/skel/.env.sh
 cat >> /etc/skel/.bashrc << EEOF
 
-[ -f ~/bin/env.sh ] && . ~/bin/env.sh
+[ -f ~/.env.sh ] && . ~/.env.sh
 
 EEOF
 
@@ -132,6 +120,7 @@ useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   usermod -p '!' root
 
 EOF
+sed -i "s/\(default_password=\)${default_password}/\1/" /mnt/home/Public/bin/setup.conf
 
 if [ $post_install_action == 'Shutdown' ]; then
     shutdown -h now
@@ -150,3 +139,8 @@ fi
 # 2017-07-07 1.00.05 Added WARNING to readme file, changed default swap size.
 # 2017-07-08 1.00.06 Cleared Grub default timeout, added option of no DE or DM to gui.
 # 2018-03-17 1.00.07 Removed the productivity apps script references
+# 2018-04-07 1.00.08 Moved config info into a separate file ignored by git.
+#                    Moved the install files from the root directory to /home/Public/bin
+#                    Added comments about the partition scheme
+#                    Added a line to delete the default password from the config file on
+#                    the remote system.
