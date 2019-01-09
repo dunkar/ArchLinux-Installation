@@ -12,6 +12,11 @@
 #   4. Switch to another workstation with the install scripts and type:
 #       <<./start.sh IP.ADDR.OF.TARGET>>
 
+if [ -z bin/setup.conf ]; then
+    echo 'ABORTING: The bin/setup.conf file was not found.'
+    echo 'Please create the bin/setup.conf file before continuing.'
+    exit 1
+fi
 
 ip_addr=${1}
 if [[ "${ip_addr}" = "local" ]]; then
