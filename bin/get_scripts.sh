@@ -5,7 +5,6 @@ if [ -z $(which git) ]; then
     exit 1
 fi
 
-scripts_source="https://gitlab.com/jfdahl/myscripts.git"
-mkdir -p ~/Git
-git clone ${scripts_source} ~/Git/scripts
-chmod -R +x ~/Git/scripts
+scripts_source="https://github.com/jfdahl/myscripts.git"
+git clone ${scripts_source} ~/scripts
+chmod -R +x ~/scripts
