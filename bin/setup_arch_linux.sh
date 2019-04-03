@@ -53,7 +53,7 @@ else
 fi
 
 # Setup swap file ##############################################################
-fallocate -l 2048M /mnt/swapfile
+fallocate -l ${swap_size} /mnt/swapfile
 chmod 0600 /mnt/swapfile
 mkswap /mnt/swapfile
 sysctl -w vm.swappiness=1
