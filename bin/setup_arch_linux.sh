@@ -69,6 +69,7 @@ sed -i 's/^#Server/Server/g' /etc/pacman.d/mirrorlist
 packages='base grub sudo' # linux-lts linux-lts-headers'
 $EFI && packages="$packages efibootmgr"
 $WIFI && packages="$packages iw wpa_supplicant dialog rfkill"
+packages="${packages} ${additional_packages}"
 pacstrap /mnt $packages   #add --no-check-certificate parameter as needed.
 genfstab -Up /mnt >> /mnt/etc/fstab
 
@@ -120,7 +121,7 @@ useradd -m -s /bin/bash -G wheel,storage,power,adm,disk ${default_username} && \
   usermod -p '!' root
 
 EOF
-sed -i "s/\(default_password=\)${default_password}/\1/" /mnt/home/Public/bin/setup.conf
+sed -i "s/\(default_password=\)${default_password}/\1REMOVED/" /mnt/home/Public/bin/setup.conf
 
 if [ $post_install_action == 'Shutdown' ]; then
     shutdown -h now
@@ -144,3 +145,5 @@ fi
 #                    Added comments about the partition scheme
 #                    Added a line to delete the default password from the config file on
 #                    the remote system.
+# 2019-04-10 1.01.00 Added the additional_packages to the configuration file.
+#                    Added a note to the target configuration file about removing the default password.
