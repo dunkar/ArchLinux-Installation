@@ -1,5 +1,5 @@
-__version__=0.01.00
-__date__=2018-04-07
+__version__=0.02.00
+__date__=2019-04-10
 
 # Preferences ##################################################################
 # Make a copy of this file without the .template extension and configure it for
@@ -8,10 +8,11 @@ __date__=2018-04-07
 
 target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
-GPT=true
+GPT=false
 linux_filesystem=ext4
 grub_timeout=3
 timezone=US/Central
 default_username=
 default_password=
 post_install_action=Shutdown        # Shutdown, Reboot, None
+additional_packages=base-devel openssh
