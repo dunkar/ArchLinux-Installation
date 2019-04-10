@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-__version__=1.00.08
-__date__=2018-04-07
+__version__=1.01.00
+__date__=2019-04-10
 
 source /tmp/bin/setup.conf
 
