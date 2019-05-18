@@ -35,7 +35,7 @@ fi
 
 # Setup Desktop Environment ################
 if [ "${desktop_environment}" == "xfce4" ]; then
-    packages="${packages} xfce4 xfce4-whiskermenu-plugin xfce4-pulseaudio-plugin mousepad"
+    packages="${packages} xfce4 xfce4-goodies"
     init_exec="startxfce4"
 elif [ "${desktop_environment}" == "lxde" ]; then
     packages="${packages} lxde" #lxde-common lxsession openbox are the minimum set, but they aren't working.

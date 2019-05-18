@@ -10,9 +10,11 @@ target_hostname=ArchLinux-$RANDOM
 target_disk_device=sda
 GPT=false
 linux_filesystem=ext4
-grub_timeout=3
+grub_timeout=0
 timezone=US/Central
 default_username=
 default_password=
 post_install_action=Shutdown        # Shutdown, Reboot, None
-additional_packages=base-devel openssh
+swap_size=1024M
+mirror_preferences="country=US"
+additional_packages=
