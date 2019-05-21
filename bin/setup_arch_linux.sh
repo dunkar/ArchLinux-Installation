@@ -5,28 +5,6 @@ __date__=2019-05-14
 ###############################################################################
 # Functions ###################################################################
 
-function load_configuration_file(){
-    config_file=${1}
-    if [ -z ${config_file+x} ]; then 
-        echo "Config file is not defined. Using default settings"; 
-        target_hostname=ArchLinux-$RANDOM
-        target_disk_device=sda
-        GPT=false
-        linux_filesystem=ext4
-        grub_timeout=0
-        timezone=US/Central
-        default_username=user
-        default_password=user
-        post_install_action=Shutdown        # Shutdown, Reboot, None
-        swap_size=1024M
-        mirror_preferences="country=US"
-        additional_packages=base-devel
-    else 
-        echo "The configuration is from ${config_file}"
-        source  ${config_file}
-    fi
-}
-
 function detect_system_parameters(){
     # Check boot mode and sync clock ##########################################
     [ -d /sys/firmware/efi/efivars ] && EFI=true || EFI=false
@@ -151,7 +129,7 @@ function cleanup(){
 ###############################################################################
 # Main Execution ##############################################################
 
-load_configuration_file /tmp/bin/setup.conf
+source /tmp/bin/setup.conf
 detect_system_parameters
 setup_partitions
 setup_swap_file

@@ -6,15 +6,15 @@ __date__=2019-04-10
 # needs. This will be sourced by the setup_arch_linux.sh shell script.
 #
 
-target_hostname=ArchLinux-$RANDOM
-target_disk_device=sda
+additional_packages=base-devel
+default_username=user
+default_password=user
 GPT=false
-linux_filesystem=ext4
 grub_timeout=0
-timezone=US/Central
-default_username=
-default_password=
-post_install_action=Shutdown        # Shutdown, Reboot, None
-swap_size=1024M
+linux_filesystem=ext4
 mirror_preferences="country=US"
-additional_packages=
+post_install_action=Shutdown        # Shutdown, Reboot, None
+swap_size=2048M
+target_disk_device=sda
+target_hostname=ArchLinux-$RANDOM
+timezone=US/Central
